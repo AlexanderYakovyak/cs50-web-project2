@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Your listings</h2>
+
+    <ul class="listings">
+        {% for listed_item in listed_items %}
+            <li class="shadow p-3 mb-5 bg-white rounded">
+                <div>
+                    <img src={{listed_item.image_url}} alt="Cannot display the image" />
+                </div>
+                <div>
+                    <h5><a href="{% url 'auction_listing' listed_item.id %}">{{listed_item.title}}</a></h5>
+                    <h5>Price: ${{listed_item.bids.last.bid}}</h5>
+                    <p>{{listed_item.description}}</p>
+                </div>
+            </li>
+        {% empty %}
+            <h3>You have not listed any auctions. Go to "Create Listing" page to add new auction. </h3>
+        {% endfor %}
+    </ul>
+{% endblock %}

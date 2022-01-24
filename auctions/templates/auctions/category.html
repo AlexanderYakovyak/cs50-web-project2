@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Category: {{category}}</h2>
+    
+    <ul class="listings">
+        {% for category_listing in category_listings %}
+            <li class="shadow p-3 mb-5 bg-white rounded">
+                <div>
+                    <img src={{category_listing.image_url}} alt="Cannot display the image" />
+                </div>
+                <div>
+                    <h5><a href="{% url 'auction_listing' category_listing.id %}">{{category_listing.title}}</a></h5>
+                    <h5>Price: ${{category_listing.bids.last.bid}}</h5>
+                    <p>{{category_listing.description}}</p>
+                </div>
+            </li>
+        {% empty %}
+            <h3>No active listings for this category. Come back later:)</h3>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+body {
+    padding: 10px;
+    margin-inline: auto;
+    width: min(100%, 100em);
+}
+
+.nav {
+    background: #393939;
+}
+
+.nav-link {
+    color: #ffffff;
+}
+
+.nav-link:hover {
+    color: #00ff90;
+}
+
+.categories-list {
+    list-style-type: none;
+}
+
+.list-group-item {
+    width: min(30%, 30em);
+}
+
+ul.listings li {
+    margin: 1em auto;
+    display: grid;
+    grid-auto-flow: column;
+    width: min(90%, 60em);
+    gap: 2em;
+}
+
+.new_listing_form label, input, textarea
+.new_comment_form label, input, textarea {
+    display: block;
+    margin: 10px 0;
+    width: 20em;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+textarea {
+    height: 8em;
+    resize: none;
+}
+
+img {
+    width: 28em;
+}
+
+.listing-content {
+    width: min(30%, 60em);
+}
+
+.listing-content >* {
+    margin: 0.5em 0;
+}
+

@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Won listings</h2>
+
+    <ul class="listings">
+        {% for won_listing in won_listings %}
+            <li class="shadow p-3 mb-5 bg-white rounded">
+                <div>
+                    <img src={{won_listing.image_url}} alt="Cannot display the image" />
+                </div>
+                <div>
+                    <h5><a href="{% url 'auction_listing' won_listing.id %}">{{won_listing.title}}</a></h5>
+                    <h5>Price: ${{won_listing.bids.last.bid}}</h5>
+                    <p>{{won_listing.description}}</p>
+                </div>
+            </li>
+        {% empty %}
+            <h3>You have not won any auctions. Go to "Active Listings" page to participate. </h3>
+        {% endfor %}
+    </ul>
+    
+
+{% endblock %}

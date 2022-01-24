@@ -1,0 +1,93 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+    <h2>Listing: {{listing.title}}</h2>
+
+    {% if message %}
+        <div style="color:darkred; font-size:20px; font-weight:bold;">{{ message }}</div>
+    {% endif %}
+
+    {% if listing.closed and listing.bids.last.bidder == user %}
+        <div style="color:limegreen; font-size:20px; font-weight:bold;">
+            Congratulations! You have won that auction
+        </div>
+    {% endif %}
+
+    {% if user.is_authenticated and not in_watchlist %}
+        <form action="{% url 'auction_listing' listing.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="to_watchlist" value="add" />
+            <input type="submit" class="btn btn-secondary" value="Add to watchlist" />
+        </form>
+    {% elif user.is_authenticated %}
+        <form action="{% url 'auction_listing' listing.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="to_watchlist" value="remove" />
+            <input type="submit" class="btn btn-secondary" value="Remove from watchlist" />
+        </form>
+    {% endif %}    
+
+
+        <div class="listing-content">
+            {% if listing.image_url %}
+                <img src={{listing.image_url}} alt="Cannot display the image" />
+            {% endif %}
+
+            <p>{{listing.description}}</p>
+            <h3>${{listing.bids.last.bid}}</h3>
+
+            {% if user.is_authenticated and user != listing.creator.first and not listing.closed %}
+            <form action="{% url 'auction_listing' listing.id %}" method="post">
+                {% csrf_token %}
+                <input type="number" name="bid" value="{{listing.bids.last.bid}}" />
+                <input type="submit" class="button" value="Place Bid" />
+            </form>
+            {% endif %}
+
+            <h3>Details:</h3>
+            <ul>
+                <li>
+                    Listed by: {{listing.creator.first.username}}
+                </li>
+                <li>
+                    {% if listing.category %}
+                    Category: {{listing.category.first.name}}
+                    {% else %}
+                    Categort: No Category Listed
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+
+    {% if user == listing.creator.first and not listing.closed %}
+        <form action="{% url 'auction_listing' listing.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="end_listing" value="end" />
+            <input type="submit" class="btn btn-danger" value="End listing"/>
+        </form>
+    {% endif %}
+    
+    <h3>Comments section:</h3>
+    <ul>
+        {% for comment in listing.comments.all %}
+            <li>
+                <p>{{comment.creator}}</p>
+                <p>{{comment.message}}</p>
+            </li>
+        {% empty %}
+            <p>No comments yet. Write your one bellow </p>
+        {% endfor %}
+    </ul>
+
+    {% if user.is_authenticated %}
+        <form class="new_comment_form" action="{% url 'auction_listing' listing.id %}" method="post">
+            {% csrf_token %}
+            {{comment}}
+            <input type="submit" class="btn btn-info" value="Add comment" />
+        </form>
+    {% else %}
+        <h4>Log in to leave comments.</h4>
+    {% endif %}
+
+{% endblock %}
